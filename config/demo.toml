@@ -1,0 +1,13 @@
+Title = "Notify DEMO"
+
+[systeam]
+# 垃圾訊息
+xMsg = false
+
+[Discord]
+#Webhook link
+WebhookLink = 'https://discordapp.com/...'
+
+[Line]
+#line
+Mag = '...'
