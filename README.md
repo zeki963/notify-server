@@ -1,7 +1,7 @@
 # Notify-Server
 ##  lazy like me (っ´ω`c)
 
-![Logo](/logo.gif)
+![Logo](/logo-m.gif)
 
 透過 Grpc 通道傳送訊息
 
