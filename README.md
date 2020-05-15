@@ -1,5 +1,5 @@
-# Notify-Server
-## lazy like me (っ´ω`c)
+## Notify-Server
+### lazy like me (っ´ω`c)
 
 ![Logo](/logo-m.png)
 
@@ -9,17 +9,13 @@ Notify-Server by microservices
 
 透過gRPC同時對多個應用程式發出通知
 
-Support application
-- Discord 
-- Line
-
 ### Todo
 - [x] Welcome msg
 - [x] GRPC
 - [x] Log
 - [ ] Admin page 
 
-### Application
+### Support application
 - [x] Discord
 - [ ] Slack
 - [x] Line
@@ -33,6 +29,12 @@ Work Explanation
 QuickStart
 ---
 ---
+
+ 須先申請Bot相關帳號資料
+- [Discord](https://discord.com/developers/docs/intro)
+- [Line](https://account.line.biz/login?scope=line&redirectUri=https%3A%2F%2Fdevelopers.line.biz%2Fconsole%2F)
+
+Downland file
 
 ```bash
 vim config/demo.toml
