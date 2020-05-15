@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/zorhayashi/notify-server/config"
 	util "github.com/zorhayashi/notify-server/util"
 )
 
@@ -10,12 +11,8 @@ var (
 	version = "0.0.1"
 )
 
-func init() {
-
-}
-
 //Print init
-func Print() {
+func init() {
 	xMsg := util.GetLineMsg()
 	logo := fmt.Sprintf(` 	     _   _  __                                          
  _ __   ___ | |_(_)/ _|_   _       ___  ___ _ ____   _____ _ __ 
@@ -23,8 +20,9 @@ func Print() {
 | | | | (_) | |_| |  _| |_| |_____\__ \  __/ |   \ V /  __/ |   
 |_| |_|\___/ \__|_|_|  \__, |     |___/\___|_|    \_/ \___|_|   
              	        |___/               - version : %s -
-----------------------------------------------------------------
-%s`, version, xMsg)
-	fmt.Println(logo)
-	fmt.Println()
+----------------------------------------------------------------`, version)
+	util.Logo(logo)
+	fmt.Println(xMsg)
+	fmt.Println("----------------------------------------------------------------")
+	config.Configinit()
 }

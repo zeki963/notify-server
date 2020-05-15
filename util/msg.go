@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-var List = []string{
+var list = []string{
 	"所謂成長，就是在聽到波濤洶湧四個字，再也聯想不到大海了。",
 	"一些年輕人，通過高端消費來營造自己高端收入的形象。",
 	"一個姑娘的介紹：思想上的女流氓，生活中的好姑娘。 然而給我的感覺是：心思活絡的醜逼。",
@@ -1232,6 +1232,6 @@ var List = []string{
 //GetLineMsg 抽訊息
 func GetLineMsg() string {
 	rand.Seed(time.Now().UnixNano())
-	n := rand.Intn(len(List))
-	return List[n]
+	n := rand.Intn(len(list))
+	return list[n]
 }

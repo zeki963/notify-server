@@ -2,30 +2,38 @@ package config
 
 import (
 	"github.com/BurntSushi/toml"
+	"github.com/zorhayashi/notify-server/util"
 )
 
 var (
+	//Global 全域配置
 	Global *Config
 )
 
-//Config 設定組態
+//Config toml
 type Config struct {
-	Title   string  `toml:"title"`
-	Discord Discord `toml:"discord"`
+	Title   string `toml:"Title"`
+	Systeam struct {
+		Admin bool `toml:"Admin"`
+	} `toml:"systeam"`
+	Discord struct {
+		DiscordStatus bool   `toml:"DiscordStatus"`
+		WebhookLink   string `toml:"WebhookLink"`
+	} `toml:"Discord"`
+	Line struct {
+		LineStatus         bool   `toml:"LineStatus"`
+		ChannelSecret      string `toml:"channelSecret"`
+		ChannelAccessToken string `toml:"channelAccessToken"`
+	} `toml:"Line"`
 }
 
-//Discord Discord
-type Discord struct {
-	WebhookLink string `toml:"webhookLink"`
-}
-
-func (a Discord) info() string {
-	return a.WebhookLink
-}
-
-func init() {
-	println(" < - Config loading - > ")
-	LoadGlobalConfig("config/config.toml")
+//Configinit 初始化設定參數
+func Configinit() {
+	util.Info("Config loding..")
+	if err := LoadGlobalConfig("config/config.toml"); err != nil {
+		util.Error("Config Errorrrrr")
+	}
+	util.Success(`Config.Title [` + Global.Title + `]`)
 }
 
 //LoadGlobalConfig 加載全局配置

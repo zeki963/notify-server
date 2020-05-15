@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/zorhayashi/notify-server/config"
+	"github.com/zorhayashi/notify-server/util"
 )
 
 //Post discord webhooks
@@ -15,6 +16,8 @@ func Post(msg string) {
 
 	if err != nil {
 		// handle error
+		util.Error(err.Error())
 	}
+	util.Success("[Discord].Post " + msg)
 	defer resp.Body.Close()
 }

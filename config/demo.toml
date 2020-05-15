@@ -1,13 +1,16 @@
 Title = "Notify DEMO"
 
 [systeam]
-# 垃圾訊息
-xMsg = false
+# admin page
+Admin = true
 
 [Discord]
 #Webhook link
+DiscordStatus = true
 WebhookLink = 'https://discordapp.com/...'
 
 [Line]
 #line
-Mag = '...'
+LineStatus = true
+channelSecret = 'a'
+channelAccessToken = 'b'
