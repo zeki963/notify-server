@@ -1,6 +1,8 @@
 ## Notify-Server
 ### lazy like me (っ´ω`c)
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/zorhayashi/notify-server)](https://goreportcard.com/report/github.com/zorhayashi/notify-server)
+
 ![Logo](/logo-m.png)
 
 微服務-通知訊息伺服器
@@ -40,3 +42,8 @@ Downland file
 vim config/demo.toml
 go run notify-server.go
 ```
+
+Licenses
+---
+
+This program is under the terms of the MIT License. See [LICENSE](/LICENSE) for the full license text.
