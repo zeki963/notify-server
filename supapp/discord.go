@@ -1,4 +1,4 @@
-package discord
+package supapp
 
 import (
 	"net/http"
@@ -8,8 +8,8 @@ import (
 	"github.com/zorhayashi/notify-server/util"
 )
 
-//Post discord webhooks
-func Post(msg string) {
+//DiscordPost discord webhooks
+func DiscordPost(msg string) {
 	resp, err := http.Post(config.Global.Discord.WebhookLink,
 		"application/x-www-form-urlencoded",
 		strings.NewReader("content="+msg))
