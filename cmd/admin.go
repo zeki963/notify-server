@@ -1,54 +1,23 @@
 package cmd
 
 import (
-	"github.com/jroimartin/gocui"
+	"github.com/awesome-gocui/gocui"
+	//"github.com/jroimartin/gocui"
 	//"github.com/zorhayashi/notify-server/config"
 	"log"
+	//"io/ioutil"
 	"fmt"
 )
 
-func layout(g *gocui.Gui) error {
-	maxX, maxY := g.Size()
-
-	if v, err := g.SetView("help", maxX-23, 0, maxX-1, 3); err != nil {
-		if err != gocui.ErrUnknownView {
-			return err
-		}
-		v.Title = "Keybindings"
-		fmt.Fprintln(v, "^a: Set mask")
-		fmt.Fprintln(v, "^c: Exit")
-	}
-	if v, err := g.SetView("Menu", maxX-23, 4, maxX-1, 10); err != nil {
-		if err != gocui.ErrUnknownView {
-			return err
-		}
-		v.Title = "menu"
-		fmt.Fprintln(v,"1111")
-		fmt.Fprintln(v,"2222")
-	}
-
-	if v, err := g.SetView("input", 0, 0, maxX-24, maxY-1); err != nil {
-		if err != gocui.ErrUnknownView {
-			return err
-		}
-		if _, err := g.SetCurrentView("input"); err != nil {
-			return err
-		}
-		v.Title = "Log's"
-		v.Editable = true
-		v.Wrap = true
-	}
-
-	return nil
-}
-
 //Admin 管理界面
 func Admin() {
-	g, err := gocui.NewGui(gocui.OutputNormal)
+	g, err := gocui.NewGui(gocui.OutputNormal, true)
 	if err != nil {
-		log.Panicln(err)
+		log.Fatalln(err)
 	}
 	defer g.Close()
+
+	g.Cursor = true
 
 	g.SetManagerFunc(layout)
 
@@ -56,23 +25,104 @@ func Admin() {
 		log.Fatalln(err)
 	}
 
-	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
+	if err := g.MainLoop(); err != nil && !gocui.IsQuit(err) {
 		log.Fatalln(err)
 	}
+
 }
-func initKeybindings(g *gocui.Gui) error {
-	if err := g.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone,
-		func(g *gocui.Gui, v *gocui.View) error {
-			return gocui.ErrQuit
-		}); err != nil {
-		return err
+
+func layout(g *gocui.Gui) error {
+	maxX, maxY := g.Size()
+
+	if v, err := g.SetView("Notify-Server", 0, 0, 25, 4, 0); err != nil {
+		if !gocui.IsUnknownView(err) {
+			return err
+		}
+		v.Title = "Notify-Server"
+		fmt.Fprintln(v, `	  __  ___    ___      `)
+		fmt.Fprintln(v, `|\ | /  \  |  | |__  \ / `)
+		fmt.Fprintln(v, `| \| \__/  |  | |     |  `)
 	}
-	if err := g.SetKeybinding("input", gocui.KeyCtrlA, gocui.ModNone,
-		func(g *gocui.Gui, v *gocui.View) error {
-			v.Mask ^= '6'
-			return nil
-		}); err != nil {
-		return err
+
+	if v, err := g.SetView("menu", 0, 5, 25, maxY-7,0); err != nil {
+		if !gocui.IsUnknownView(err) {
+			return err
+		}
+		v.Title = "menu"
+		v.Highlight = true
+		v.SelBgColor = gocui.ColorBlue
+		v.SelFgColor = gocui.ColorBlack
+		
+		fmt.Fprintf(v, "\033[3%d;%dmAll-Server \033[0m\n", int(2), int(3))
+		fmt.Fprintln(v,"A-Server")
+		fmt.Fprintln(v,"B-Server")
+		fmt.Fprintln(v,"C-Server")
 	}
+	if v, err := g.SetView("help", 0,  maxY-6, 25, int(maxY-1),0); err != nil {
+		if !gocui.IsUnknownView(err) {
+			return err
+		}
+		v.Title = "Keybindings"
+		fmt.Fprintln(v, "Tab: Switch")
+		fmt.Fprintln(v, "^s: Setting")
+		fmt.Fprintln(v, "^a: Set mask")
+		fmt.Fprintln(v, "^c: Exit")
+	}
+
+	if v, err := g.SetView("logbox", 26, 0, int(maxX-1), int(maxY-1), 0); err != nil {
+		if !gocui.IsUnknownView(err) {
+			return err
+		}
+		if _, err := g.SetCurrentView("logbox"); err != nil {
+			return err
+		}
+		// b, err := ioutil.ReadFile("demolog.txt")
+		// if err != nil {
+		// 	panic(err)
+		// }
+		// fmt.Fprintf(v, "%s", b)
+		
+		
+		v.Editable = true
+		v.Wrap = true
+	}
+
 	return nil
 }
+
+func initKeybindings(g *gocui.Gui) error {
+	if err := g.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone,quit); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("", gocui.KeyCtrlA, gocui.ModNone,mask); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("", gocui.KeyCtrlS, gocui.ModNone, setting); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("settingpage", gocui.KeyCtrlV, gocui.ModNone, settingsave); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("settingpage", gocui.KeyEsc, gocui.ModNone, settingcloss); err != nil {
+		return err
+	}
+	//TAB 交換視窗
+	if err := g.SetKeybinding("logbox", gocui.KeyTab, gocui.ModNone, switchItem); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("menu", gocui.KeyArrowDown, gocui.ModNone, cursorDown); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("menu", gocui.KeyArrowUp, gocui.ModNone, cursorUp); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("menu", gocui.KeyEnter, gocui.ModNone, getLine); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("", gocui.KeyCtrlL, gocui.ModNone, testlog); err != nil {
+		return err
+	}
+
+	return nil
+}
+

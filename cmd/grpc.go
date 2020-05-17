@@ -31,7 +31,7 @@ func (e *PostMsgServer) PostMsg(ctx context.Context, req *pb.MsgRequest) (resp *
 
 //GrpcServer 主Server
 func GrpcServer() {
-	apiListener, err := net.Listen("tcp", ":9999"+config.Global.po)
+	apiListener, err := net.Listen("tcp", ":"+string(config.Global.Systeam.Port))
 	if err != nil {
 		log.Println(err)
 		return

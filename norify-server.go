@@ -6,6 +6,5 @@ import (
 
 func main() {
 	//export LC_CTYPE="en_US.UTF-8"
-	//cmd.GrpcServer()
-	cmd.Admin()
+	cmd.GrpcServer()
 }

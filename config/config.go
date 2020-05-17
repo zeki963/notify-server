@@ -14,7 +14,8 @@ var (
 type Config struct {
 	Title   string `toml:"Title"`
 	Systeam struct {
-		Admin bool `toml:"Admin"`
+		Admin bool   `toml:"Admin"`
+		Port  string `toml:"Port"`
 	} `toml:"systeam"`
 	Discord struct {
 		DiscordStatus bool   `toml:"DiscordStatus"`

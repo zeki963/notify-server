@@ -25,4 +25,12 @@ func init() {
 	fmt.Println(xMsg)
 	fmt.Println("----------------------------------------------------------------")
 	config.Configinit()
+	switch config.Global.Systeam.Admin {
+	case true:
+		util.Info("admin mode")
+		Admin()
+	case false:
+		util.Info("cmd mode")
+		util.Info("Server Port : " + config.Global.Systeam.Port)
+	}
 }
