@@ -6,7 +6,6 @@ require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/awesome-gocui/gocui v0.6.0
 	github.com/golang/protobuf v1.4.1
-	github.com/jinzhu/gorm v1.9.12
 	github.com/line/line-bot-sdk-go v7.4.0+incompatible
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	golang.org/x/net v0.0.0-20200513185701-a91f0712d120

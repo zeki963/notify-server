@@ -9,6 +9,10 @@ import (
 	"fmt"
 )
 
+var (
+	msga = "123"
+)
+
 //Admin 管理界面
 func Admin() {
 	g, err := gocui.NewGui(gocui.OutputNormal, true)
@@ -16,9 +20,10 @@ func Admin() {
 		log.Fatalln(err)
 	}
 	defer g.Close()
-
+	g.Highlight = true
 	g.Cursor = true
-
+	g.SelFgColor = gocui.ColorYellow
+	g.SelFrameColor = gocui.ColorGreen
 	g.SetManagerFunc(layout)
 
 	if err := initKeybindings(g); err != nil {
@@ -44,21 +49,21 @@ func layout(g *gocui.Gui) error {
 		fmt.Fprintln(v, `| \| \__/  |  | |     |  `)
 	}
 
-	if v, err := g.SetView("menu", 0, 5, 25, maxY-7,0); err != nil {
+	if v, err := g.SetView("menu", 0, 5, 25, maxY-7, 0); err != nil {
 		if !gocui.IsUnknownView(err) {
 			return err
 		}
-		v.Title = "menu"
+		v.Title = "Menu"
 		v.Highlight = true
-		v.SelBgColor = gocui.ColorBlue
-		v.SelFgColor = gocui.ColorBlack
-		
-		fmt.Fprintf(v, "\033[3%d;%dmAll-Server \033[0m\n", int(2), int(3))
-		fmt.Fprintln(v,"A-Server")
-		fmt.Fprintln(v,"B-Server")
-		fmt.Fprintln(v,"C-Server")
+		// v.SelBgColor = gocui.ColorBlue
+		// v.SelFgColor = gocui.ColorBlack
+
+		fmt.Fprintln(v, "All-Server")
+		fmt.Fprintln(v, "A-Server")
+		fmt.Fprintln(v, "B-Server")
+		fmt.Fprintln(v, "C-Server")
 	}
-	if v, err := g.SetView("help", 0,  maxY-6, 25, int(maxY-1),0); err != nil {
+	if v, err := g.SetView("help", 0, maxY-6, 25, int(maxY-1), 0); err != nil {
 		if !gocui.IsUnknownView(err) {
 			return err
 		}
@@ -69,20 +74,22 @@ func layout(g *gocui.Gui) error {
 		fmt.Fprintln(v, "^c: Exit")
 	}
 
-	if v, err := g.SetView("logbox", 26, 0, int(maxX-1), int(maxY-1), 0); err != nil {
+	if v, err := g.SetView("msgbox", 26, 0, int(maxX-1), int(maxY-1), 0); err != nil {
+		v.Title = "msgbox"
 		if !gocui.IsUnknownView(err) {
 			return err
 		}
-		if _, err := g.SetCurrentView("logbox"); err != nil {
+		if _, err := g.SetCurrentView("msgbox"); err != nil {
 			return err
 		}
+
+		fmt.Fprintf(v, "%s", msga)
 		// b, err := ioutil.ReadFile("demolog.txt")
 		// if err != nil {
 		// 	panic(err)
 		// }
 		// fmt.Fprintf(v, "%s", b)
-		
-		
+
 		v.Editable = true
 		v.Wrap = true
 	}
@@ -91,10 +98,10 @@ func layout(g *gocui.Gui) error {
 }
 
 func initKeybindings(g *gocui.Gui) error {
-	if err := g.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone,quit); err != nil {
+	if err := g.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone, quit); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding("", gocui.KeyCtrlA, gocui.ModNone,mask); err != nil {
+	if err := g.SetKeybinding("", gocui.KeyCtrlA, gocui.ModNone, mask); err != nil {
 		return err
 	}
 	if err := g.SetKeybinding("", gocui.KeyCtrlS, gocui.ModNone, setting); err != nil {
@@ -107,7 +114,10 @@ func initKeybindings(g *gocui.Gui) error {
 		return err
 	}
 	//TAB 交換視窗
-	if err := g.SetKeybinding("logbox", gocui.KeyTab, gocui.ModNone, switchItem); err != nil {
+	if err := g.SetKeybinding("", gocui.KeyTab, gocui.ModNone, switchItem); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("menu", gocui.KeyTab, gocui.ModNone, nu); err != nil {
 		return err
 	}
 	if err := g.SetKeybinding("menu", gocui.KeyArrowDown, gocui.ModNone, cursorDown); err != nil {
@@ -125,4 +135,3 @@ func initKeybindings(g *gocui.Gui) error {
 
 	return nil
 }
-

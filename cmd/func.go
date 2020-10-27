@@ -13,16 +13,26 @@ func switchItem(g *gocui.Gui, cv *gocui.View) error {
 	var nv *gocui.View
 	switch cv.Name() {
 	case "meun":
-		if nv, err = g.SetCurrentView("logbox"); err != nil {
+		g.SelFgColor = gocui.ColorYellow | gocui.AttrBold
+		if nv, err = g.SetCurrentView("msgbox"); err != nil {
 			return err
 		}
-	case "logbox":
+	case "msgbox":
+		if nv, err = g.SetCurrentView("menu"); err != nil {
+			return err
+		}
+	case "msgbox2":
 		if nv, err = g.SetCurrentView("menu"); err != nil {
 			return err
 		}
 	}
+
 	cv.Highlight = false
 	nv.Highlight = true
+	return nil
+}
+
+func nu(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
@@ -63,11 +73,11 @@ func cursorUp(g *gocui.Gui, v *gocui.View) error {
 func getLine(g *gocui.Gui, v *gocui.View) error {
 	_, cy := v.Cursor()
 	v.Line(cy)
-
-	g.SetCurrentView("logbox")
-
+	msga = ""
+	g.SetCurrentView("msgbox")
 	return nil
 }
+
 func setting(g *gocui.Gui, v *gocui.View) error {
 	maxX, maxY := g.Size()
 	if v, err := g.SetView("settingpage", maxX/2-30, maxY/2-10, maxX/2+30, maxY/2+10, 0); err != nil {
@@ -123,7 +133,7 @@ func settingcloss(g *gocui.Gui, v *gocui.View) error {
 }
 
 func testlog(g *gocui.Gui, v *gocui.View) error {
-	out, _ := g.View("logbox")
+	out, _ := g.View("msgbox")
 	fmt.Fprintln(out, "2020/05/00 00:00:00 [INFO]  TEST ENGmsg/中文訊息")
 	return nil
 }
